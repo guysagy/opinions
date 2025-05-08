@@ -51,7 +51,7 @@ export default function Home() {
           </a>
         </div>
         <div>
-          [Main Page Placeholder]
+          [Main Page Placeholder Changed]
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
