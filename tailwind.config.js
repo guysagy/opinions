@@ -7,7 +7,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                orbitron: ['var(--font-orbitron)', 'sans']
+                orbitron: ['var(--font-orbitron)', 'sans-serif'],
             }
         },
     },
