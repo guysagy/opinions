@@ -1,6 +1,6 @@
 ---
 title: "Hollow Night"
-date: "2025-05-10"
+date: "2025-05-14"
 image: "/images/hollow-knight.jpg"
 ---
 
