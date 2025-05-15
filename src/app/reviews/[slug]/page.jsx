@@ -6,6 +6,16 @@ export async function generateStaticParams() {
     return slugs.map((slug => ({ slug })));
 }
 
+export async function generateMetadata(props) {
+    const params = await props.params;
+    const slug = params.slug;
+    const review = await getReview(slug);
+    return {
+        title: review.title,
+        description: `Review of ${review.title}`,
+    };
+}
+
 export default async function ReviewPage(props) {
     const params = await props.params;
     const slug = params.slug;

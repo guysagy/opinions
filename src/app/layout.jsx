@@ -3,7 +3,11 @@ import { orbitron } from './fonts';
 import './globals.css';
 
 export const metadata = {
-    title: 'Indie Gamer',
+    title: {
+        default: 'Indie Gamer',
+        template: '%s | Indie Gamer',
+    },
+    description: 'Only the best indie games, reviewed for you.',
 }
 
 export default function RootLayout({ children }) {
