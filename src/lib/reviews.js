@@ -3,11 +3,6 @@ import qs from 'qs';
 
 const CMS_URL = "http://localhost:1337";
 
-export async function getFeaturedReview() {
-    const reviews = await getReviews();
-    return reviews[0];
-}
-
 export async function getReview(slug) {
     const { data } = await fetchReviews({
         filters: { slug: { $eq: slug } },
@@ -22,11 +17,11 @@ export async function getReview(slug) {
     };
 }
 
-export async function getReviews() {    
+export async function getReviews(pageSize) {    
     const { data } = await fetchReviews({
         fields: ['slug', 'title', 'subtitle', 'publishedAt',],
         populate: { image: { fields: ['url'] } },
-        pagination: { pageSize: 6 },
+        pagination: { pageSize },
         sort: ['publishedAt:desc']
     });
     return data.map(toReview);
@@ -57,6 +52,7 @@ function toReview(item) {
     return {
         slug: attributes.slug,
         title: attributes.title,
+        subtitle: attributes.subtitle,
         date: attributes.publishedAt.slice(0, 'yyyy-mm-dd'.length),
         image: `${CMS_URL}${attributes.image.data.attributes.url}`
     };
