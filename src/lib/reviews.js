@@ -1,6 +1,8 @@
 import { marked } from 'marked';
 import qs from 'qs';
 
+export const CACHE_TAG_REVIEWS = 'reviews';
+
 const CMS_URL = "http://localhost:1337";
 
 export async function getReview(slug) {
@@ -11,6 +13,9 @@ export async function getReview(slug) {
         pagination: { pageSize: 1, withCount: false }
     });
     const item = data[0];
+    if (!item) {
+        return null;
+    }
     return {
         ...toReview(item),
         body: marked(item.attributes.body, { headerids: false, mangles: false }),
@@ -40,7 +45,11 @@ export async function getSlugs() {
 async function fetchReviews(parameters) {
     const url = `${CMS_URL}/api/reviews?`
         + qs.stringify(parameters, { encodeValuesOnly: true });
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        next: {
+            tags: [CACHE_TAG_REVIEWS],
+        },
+    });
     if (!response.ok) {
         throw new Error(`CMS returned ${response.status} for ${url}`);
     }
