@@ -6,7 +6,7 @@ import { getReviews } from '@/lib/reviews';
 export const revalidate = 30;
 
 export default async function HomePage() {
-    const reviews = await getReviews(3);
+    const { reviews } = await getReviews(3);
     return (
         <>
             <Heading>Indie Gamer</Heading>
