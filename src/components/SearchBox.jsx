@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import { useIsClient } from '@/lib/hooks';
-import { searchReviews } from '@/lib/reviews';
 
 const reviews = [
     { title: 'Hades', slug: 'hades-2018' },
@@ -23,7 +22,8 @@ export default function SearchBox() {
     useEffect(() => {
         if (query.length >1) {
             (async () => {
-                const reviews = await searchReviews(query);
+                const response = await fetch('/api/search?query=' + encodeURIComponent(query));
+                const reviews = await response.json();
                 setReviews(reviews);
             })();
         } else {
