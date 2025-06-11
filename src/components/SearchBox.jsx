@@ -1,7 +1,10 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import { useIsClient } from '@/lib/hooks';
+import { searchReviews } from '@/lib/reviews';
 
 const reviews = [
     { title: 'Hades', slug: 'hades-2018' },
@@ -13,20 +16,42 @@ const reviews = [
 ];
 
 export default function SearchBox() {
+    const router = useRouter();
     const isClient = useIsClient();
+    const [query, setQuery] = useState('');
+    const [reviews, setReviews] = useState([]);
+    useEffect(() => {
+        if (query.length >1) {
+            (async () => {
+                const reviews = await searchReviews(query);
+                setReviews(reviews);
+            })();
+        } else {
+            setReviews([]);
+        }
+    }, [query]);
+
+    const handleChange = (review) => {
+        console.log('selected = ', review);
+        router.push(`/reviews/${review.slug}`);
+    }
+
+    console.log("[SearchBox] query: ", query);
     if (!isClient) {
         return null;
     }
     return (
         <div className="relative w-48">
-            <Combobox>
-                <ComboboxInput placeholder="Search ..." className="border px-2 py-1 rounded w-full"/>
+            <Combobox onChange={handleChange}>
+                <ComboboxInput 
+                    placeholder="Search ..." className="border px-2 py-1 rounded w-full"
+                    value={query} onChange={(event) => setQuery(event.target.value)}
+                />
                 <ComboboxOptions className="absolute bg-white py-1 w-full">
                     {
                         reviews.map((review) => {
-                            console.log('option = ', review.title);
                             return (
-                                <ComboboxOption key={review.slug}>
+                                <ComboboxOption key={review.slug} value={review}>
                                     {
                                         ({active}) => (
                                             <span className={`block px-2 truncate w-full ${

@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 export default function NavLink({children, href, prefetch, className}) {
     className = className || '';
     const pathname = usePathname();
-    console.log('NavLink pathname = ', pathname);
     if (pathname === href) {
         return (
             <span className={`${className} text-orange-800`}>{children}</span>

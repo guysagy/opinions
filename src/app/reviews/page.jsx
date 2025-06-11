@@ -3,7 +3,7 @@ import Heading from '@/components/Heading';
 import PaginationBar from '@/components/PaginationBar';
 import SearchBox from '@/components/SearchBox';
 import Link from 'next/link';
-import { getReviews } from '@/lib/reviews';
+import { getReviews, getSearchableReviews } from '@/lib/reviews';
 
 export const revalidate = 30;
 
@@ -17,7 +17,7 @@ export default async function ReviewsPage({ searchParams }) {
     let { page } = await searchParams;
     page = parsePageParam(page);
     const { reviews, pageCount } = await getReviews(PAGE_SIZE, page);
-    console.log('[ReviewsPage] reviews: ', reviews.map((review) => { return {title: review.title, slug: review.slug}; }));
+
     return (
         <>
             <Heading>Reviews</Heading>
