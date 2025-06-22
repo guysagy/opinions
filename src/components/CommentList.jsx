@@ -1,11 +1,11 @@
+import { getComments } from '@/lib/comments';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 
-const comments = [
-    {id: '1', user: 'Alice', message: 'Love this game'},
-    {id: '2', user: 'Bob', message: 'OK but not really my genre'},
-    {id: '3', user: 'Charlie', message: 'Cannot stop playing it'},
-]
-const CommentList = (props) => {
+const CommentList = async ({ slug }) => {
+    const comments = await getComments(slug);
+    if (comments.length === 0) {
+        return (<p className='italic mt-3'>No comments yet.</p>);
+    }
     return (
         <ul>
             {

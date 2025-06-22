@@ -44,7 +44,7 @@ export default function SearchBox() {
                     placeholder="Search ..." className="border px-2 py-1 rounded w-full"
                     value={query} onChange={(event) => setQuery(event.target.value)}
                 />
-                <ComboboxOptions className="absolute bg-white py-1 w-full">
+                <ComboboxOptions className="absolute bg-white py-1 w-full empty:invisible">
                     {
                         reviews.map((review) => {
                             return (
