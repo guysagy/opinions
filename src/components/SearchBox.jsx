@@ -41,6 +41,7 @@ export default function SearchBox() {
         <div className="relative w-48">
             <Combobox onChange={handleChange}>
                 <ComboboxInput 
+                    autocomplete="off"
                     placeholder="Search ..." className="border px-2 py-1 rounded w-full"
                     value={query} onChange={(event) => setQuery(event.target.value)}
                 />
