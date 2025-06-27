@@ -1,15 +1,33 @@
 'use client';
 
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 import { createCommentAction } from '@/app/reviews/[slug]/actions';
 
 export default function CommentForm({slug, title}) {
+    const router = useRouter();
+    const [error, setError] = useState(null);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setError(null);
         const form = event.currentTarget;
         const formData = new FormData(form);
         console.log('formData = ', formData);
-        const result = await createCommentAction(formData);
+        try {
+            const result = await createCommentAction(formData);
+            if (result?.isError) {
+                setError(result);
+            } else {
+                form.reset();
+                router.push(`/reviews/${slug}`, { scroll: false });
+            }
+        } catch (error) {
+            console.log('[CommentForm] error : ', error);
+        }
     }
+
     return (
         <form onSubmit={handleSubmit} 
             className="border bg-white flex flex-col gap-2 mt-3 px-3 py-2 rounded">
@@ -21,7 +39,7 @@ export default function CommentForm({slug, title}) {
                 <label htmlFor="userField" className="shrink-0 w-32">
                     Your name
                 </label>
-                <input id="userField" name='user' required maxLength={50}
+                <input id="userField" name='user'  maxLength={50}
                     className="border px-2 py-1 rounded w-48"
                 />
             </div>
@@ -29,10 +47,15 @@ export default function CommentForm({slug, title}) {
                 <label htmlFor="messageField" className="shrink-0 w-32">
                     Your comment
                 </label>
-                <textarea id="messageField" name='message' required maxLength={500}
+                <textarea id="messageField" name='message'  maxLength={500}
                     className="border px-2 py-1 rounded w-full"
                 />
             </div>
+            {
+                Boolean(error) && (
+                    <p className="text-red-700">{error.message}</p>
+                )
+            }
             <button type='submit'
                 className="bg-orange-800 rounded px-2 py-1 self-center
                             text-slate-50 w-32 hover:bg-orange-700">
