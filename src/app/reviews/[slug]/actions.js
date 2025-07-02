@@ -22,6 +22,7 @@ export async function createCommentAction(formData) {
         return { isError: false, message };
     } catch(error) {
         console.log('[createCommentAction] createComment error : ', error);
+        return { isError: true, message: error };
     }
 }
 

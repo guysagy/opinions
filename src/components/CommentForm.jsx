@@ -1,33 +1,10 @@
 'use client';
 
-
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'
+import { useFormState } from '@/lib/hooks';
 import { createCommentAction } from '@/app/reviews/[slug]/actions';
 
 export default function CommentForm({slug, title}) {
-    const router = useRouter();
-    const [state, setState] = useState({ loading: false, error: null });
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setState({loading: true, error: null});
-        const form = event.currentTarget;
-        const formData = new FormData(form);
-        console.log('formData = ', formData);
-        try {
-            const result = await createCommentAction(formData);
-            if (result?.isError) {
-                setState({loading: false, error: result.message});
-            } else {
-                form.reset();
-                router.push(`/reviews/${slug}`, { scroll: false });
-                setState({loading: false, error: null});
-            }
-        } catch (error) {
-            console.log('[CommentForm] error : ', error);
-        }
-    }
+    const [state, handleSubmit] = useFormState(createCommentAction);
 
     return (
         <form onSubmit={handleSubmit} 
