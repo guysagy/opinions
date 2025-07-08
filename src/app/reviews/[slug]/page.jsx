@@ -6,6 +6,7 @@ import Heading from '@/components/Heading';
 import ShareLinkButton from '@/components/ShareLinkButton';
 import CommentList from '@/components/CommentList';
 import CommentForm from '@/components/CommentForm';
+import { Suspense } from 'react';
 
 export async function generateStaticParams() {
     const slugs = await getSlugs();
@@ -54,7 +55,9 @@ export default async function ReviewPage(props) {
                     Comments
                 </h2>
                 <CommentForm slug={slug} title={review.title}/>
-                <CommentList slug={slug}/>
+                <Suspense fallback={<p>Loading ...</p>}>
+                    <CommentList slug={slug}/>
+                </Suspense>
             </section>
         </>
     );
